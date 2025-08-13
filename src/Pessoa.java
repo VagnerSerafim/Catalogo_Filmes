@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-
 public abstract class Pessoa {
     private String nome;
     private String dataNascimento;
@@ -11,20 +9,12 @@ public abstract class Pessoa {
         this.nacionalidade = nacionalidade;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public String getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public String getNacionalidade() {
-        return nacionalidade;
-    }
+    public String getNome() { return nome; }
+    public String getDataNascimento() { return dataNascimento; }
+    public String getNacionalidade() { return nacionalidade; }
 
     @Override
     public String toString() {
-        return nome + " (" + nacionalidade + ", nasc.: " + dataNascimento + ")";
+        return nome + " | Nasc.: " + dataNascimento + " | Nacionalidade: " + nacionalidade;
     }
 }
