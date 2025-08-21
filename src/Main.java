@@ -75,29 +75,73 @@ public class Main {
         System.out.println("Diretor cadastrado com sucesso!");
     }
 
+
     private static void associarFilme() {
         listarFilmes();
-        if (catalogo.getFilmes().isEmpty()) return;
-
-        System.out.print("Escolha o índice do filme: ");
-        int idxFilme = Integer.parseInt(sc.nextLine());
-        Filme filme = catalogo.getFilmes().get(idxFilme);
-
-        listarDiretores();
-        if (!diretores.isEmpty()) {
-            System.out.print("Escolha o índice do diretor: ");
-            int idxDir = Integer.parseInt(sc.nextLine());
-            filme.setDiretor(diretores.get(idxDir));
+        if (catalogo.getFilmes().isEmpty()) {
+            System.out.println("Nenhum filme disponível para associar.");
+            return;
         }
 
+        System.out.print("Escolha o índice do filme: ");
+        String entradaFilme = sc.nextLine();
+        int idxFilme;
+        try {
+            idxFilme = Integer.parseInt(entradaFilme);
+            if (idxFilme < 0 || idxFilme >= catalogo.getFilmes().size()) {
+                System.out.println("Índice de filme inválido!");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Digite um número.");
+            return;
+        }
+        Filme filme = catalogo.getFilmes().get(idxFilme);
+
+        // Associar Diretor
+        listarDiretores();
+        if (!diretores.isEmpty()) {
+            System.out.print("Escolha o índice do diretor (ou -1 para pular): ");
+            String entradaDir = sc.nextLine();
+            try {
+                int idxDir = Integer.parseInt(entradaDir);
+                if (idxDir >= 0 && idxDir < diretores.size()) {
+                    filme.setDiretor(diretores.get(idxDir));
+                    System.out.println("Diretor associado com sucesso!");
+                } else if (idxDir == -1) {
+                    System.out.println("Associação de diretor ignorada.");
+                } else {
+                    System.out.println("Índice de diretor inválido!");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida para diretor. Nenhum associado.");
+            }
+        }
+
+        // Associar Atores
         listarAtores();
         if (!atores.isEmpty()) {
-            System.out.print("Quantos atores deseja adicionar? ");
-            int qtd = Integer.parseInt(sc.nextLine());
-            for (int i = 0; i < qtd; i++) {
-                System.out.print("Índice do ator: ");
-                int idxAtor = Integer.parseInt(sc.nextLine());
-                filme.adicionarAtor(atores.get(idxAtor));
+            System.out.print("Quantos atores deseja adicionar (0 para pular): ");
+            String entradaQtd = sc.nextLine();
+            try {
+                int qtd = Integer.parseInt(entradaQtd);
+                for (int i = 0; i < qtd; i++) {
+                    System.out.print("Índice do ator: ");
+                    String entradaAtor = sc.nextLine();
+                    try {
+                        int idxAtor = Integer.parseInt(entradaAtor);
+                        if (idxAtor >= 0 && idxAtor < atores.size()) {
+                            filme.adicionarAtor(atores.get(idxAtor));
+                            System.out.println("Ator associado!");
+                        } else {
+                            System.out.println("Índice de ator inválido!");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Entrada inválida para ator. Ignorado.");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Nenhum ator associado.");
             }
         }
 
